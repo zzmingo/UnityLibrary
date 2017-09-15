@@ -14,10 +14,12 @@ namespace Mingo.Tween {
 		public UILineRenderer lineRenderer;
 		public InputField durationField;
 		public Toggle yoyoToggle;
+		public InputField repeatTimesField;
 
 		private EasingFunc easingFunc = Easing.Linear;
 		private float duration = 1f;
 		private bool yoyo = false;
+		private int repeatTimes = 0;
 
 		private EasingFunc[] easings = new EasingFunc[] {
 			Easing.Linear,
@@ -63,7 +65,8 @@ namespace Mingo.Tween {
 			var tween = gameObject.TweenBy("x", width);
 			tween.Easing(easingFunc)
 					 .Duration(duration)
-					 .Yoyo(yoyo);
+					 .Yoyo(yoyo)
+					 .Repeat(repeatTimes);
 
 			if (drawLineCoroutine != null) {
 				StopCoroutine(drawLineCoroutine);
@@ -91,13 +94,25 @@ namespace Mingo.Tween {
 			this.yoyo = yoyoToggle.isOn;
 		}
 
+		public void OnRepeatTimesChange(string repeatTimesStr) {
+			repeatTimesStr = repeatTimesField.text;
+			if (string.IsNullOrEmpty(repeatTimesStr.Trim())) {
+				return;
+			}
+			repeatTimes = int.Parse(repeatTimesStr);
+			if (repeatTimes <= 0) {
+				repeatTimesField.text = "1";
+				repeatTimes = 1;
+			}
+		}
+
 		private IEnumerator DrawLine(TweenInstance tween) {
 			var rect = lineRenderer.gameObject.GetComponent<RectTransform>().rect;
 			List<Vector2> points = new List<Vector2>();
 			points.Add(new Vector2(0, 0));
 			lineRenderer.Points = new Vector2[0];
 			float duration = tween.duration;
-			if (tween.repeatTimes > 1) {
+			if (tween.repeatTimes >= 1) {
 				duration = (tween.repeatTimes + 1) * tween.duration;
 			}
 			if (tween.yoyo) {

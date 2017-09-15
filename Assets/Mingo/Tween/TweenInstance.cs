@@ -44,6 +44,7 @@ namespace Mingo.Tween {
     private EasingFunc easingFunc = Mingo.Tween.Easing.Linear;
     private InterpolationFunc interpolationFunc = Mingo.Tween.Interpolation.Linear;
     private bool playingYoyo = false;
+    private float unitTime = 0;
 
     private TweenProps startValues = new TweenProps();
     private TweenProps lastValues = new TweenProps();
@@ -152,7 +153,8 @@ namespace Mingo.Tween {
       if(this.completed) return true;
 
       this.time += deltaTime;
-      float elapsed = this.time % this.duration / this.duration;
+      this.unitTime += deltaTime;
+      float elapsed = this.unitTime / this.duration;
       elapsed = elapsed > 1 ? 1 : elapsed;
       easingValue = this.easingFunc(this.playingYoyo ? (1-elapsed) : elapsed);
 
@@ -170,6 +172,7 @@ namespace Mingo.Tween {
 
       if(elapsed == 1) {
         this.time = this.time - this.time % this.duration + float.Epsilon;
+        this.unitTime = 0;
 
         if (this.yoyo) {
           if (!this.playingYoyo) {

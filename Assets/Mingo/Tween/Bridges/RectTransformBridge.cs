@@ -13,6 +13,8 @@ namespace Mingo.Tween {
     public override string[] SupportedKeys { get {
       return new string[] {
         "x", "y", 
+        "left", "top", "right", "bottom",
+        "width", "height",
         "scaleX", "scaleY"
       };
     } }
@@ -21,6 +23,10 @@ namespace Mingo.Tween {
       switch (key) {
         case "x": return target.anchoredPosition.x;
         case "y": return target.anchoredPosition.y;
+        case "left": return target.offsetMin.x;
+        case "bottom": return target.offsetMin.y;
+        case "top": return target.offsetMax.y;
+        case "right": return target.offsetMax.x;
         case "scaleX": return target.localScale.x;
         case "scaleY": return target.localScale.y;
         default: return 0;
@@ -36,6 +42,30 @@ namespace Mingo.Tween {
         case "y":
           sharedVector2.Set(target.anchoredPosition.x, value);
           target.anchoredPosition = sharedVector2;
+          break;
+        case "left":
+          sharedVector2.Set(value, target.offsetMin.y);
+          target.offsetMin = sharedVector2;
+          break;
+        case "bottom":
+          sharedVector2.Set(target.offsetMin.x, value);
+          target.offsetMin = sharedVector2;
+          break;
+        case "right":
+          sharedVector2.Set(value, target.offsetMax.y);
+          target.offsetMin = sharedVector2;
+          break;
+        case "top":
+          sharedVector2.Set(target.offsetMax.x, value);
+          target.offsetMin = sharedVector2;
+          break;
+        case "width":
+          sharedVector2.Set(value, target.sizeDelta.y);
+          target.sizeDelta = sharedVector2;
+          break;
+        case "height":
+          sharedVector2.Set(target.sizeDelta.x, value);
+          target.sizeDelta = sharedVector2;
           break;
         case "scaleX":
           sharedVector3.Set(delta, 0, 0);
