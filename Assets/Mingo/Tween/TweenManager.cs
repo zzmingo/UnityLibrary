@@ -13,6 +13,7 @@ namespace Mingo.Tween {
 
     static TweenManager() {
       bridgeTable.AddBridge(new TransformBridge());
+      bridgeTable.AddBridge(new RectTransformBridge());
     }
 
     void Awake() {

@@ -11,7 +11,7 @@ namespace Mingo.Tween {
       return k;
     }
 
-    public static class Quadratic {
+    public static class Quad {
 
       public static float In(float k) {
         return k * k;
@@ -49,7 +49,7 @@ namespace Mingo.Tween {
 
     }
 
-    public static class Quartic {
+    public static class Quart {
 
       public static float In(float k) {
         return k * k * k * k;
@@ -68,7 +68,7 @@ namespace Mingo.Tween {
 
     }
 
-    public static class Quintic {
+    public static class Quint {
 
       public static float In(float k) {
         return k * k * k * k * k;
@@ -86,7 +86,7 @@ namespace Mingo.Tween {
       }
     }
 
-    public static class Sinusoidal {
+    public static class Sin {
 
       public static float In(float k) {
         return 1 - Mathf.Cos(k * Mathf.PI / 2);
@@ -102,7 +102,7 @@ namespace Mingo.Tween {
 
     }
 
-    public static class Exponential {
+    public static class Exp {
 
       public static float In(float k) {
         return k == 0 ? 0 : Mathf.Pow(1024, k - 1);
@@ -127,7 +127,7 @@ namespace Mingo.Tween {
 
     }
 
-    public static class Circular {
+    public static class Circ {
 
       public static float In(float k) {
         return 1 - Mathf.Sqrt(1 - k * k);
@@ -146,7 +146,7 @@ namespace Mingo.Tween {
 
     }
 
-    public static class Elastic {
+    public static class Elast {
 
       public static float In(float k) {
         if (k == 0) {

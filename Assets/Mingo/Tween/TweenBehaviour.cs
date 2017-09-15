@@ -15,8 +15,8 @@ namespace Mingo.Tween {
       instance = new TweenInstance(transform);
     }
 
-    void Update() {
-      if (!instance.Completed && instance.Update(Time.deltaTime)) {
+    void FixedUpdate() {
+      if (!instance.completed && instance.Update(Time.deltaTime)) {
         Destroy(this);
       }
     }

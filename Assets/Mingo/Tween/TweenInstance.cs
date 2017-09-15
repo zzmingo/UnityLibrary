@@ -11,12 +11,12 @@ namespace Mingo.Tween {
 
 	public class TweenInstance {
 
-		private class TargetWrapper {
+		public class TargetWrapper {
 
-			private readonly object target;
+			public readonly object target;
       private readonly BridgeKeyDict bridgeKeyDict;
 
-			public TargetWrapper(object target) {
+			internal TargetWrapper(object target) {
 				this.target = target;
         this.bridgeKeyDict = TweenManager.bridgeTable.GetBridgeDict(target);
 			}
@@ -31,42 +31,47 @@ namespace Mingo.Tween {
 
 		}
 
-    public float Duration { get { return duration; } }
-    public float Time { get { return time; } }
-    public bool Completed { get { return completed; } }
-    public bool Started { get { return started; } }
-    public bool Paused { get { return paused; } }
+    public object target { get { return wrapper.target; } }
+		public float duration { get; private set; }
+    public float time { get; private set; }
+    public bool started { get; private set; }
+    public bool completed { get; private set; }
+    public bool paused { get; private set; }
+    public int repeatTimes { get; private set; }
+    public bool yoyo { get; private set; }
+    public float easingValue { get; private set; }
 
-		private float duration = 1f;
-    private float time = 0;
     private EasingFunc easingFunc = Mingo.Tween.Easing.Linear;
     private InterpolationFunc interpolationFunc = Mingo.Tween.Interpolation.Linear;
-    private bool yoyoBack = false;
     private bool playingYoyo = false;
-    private bool started = false;
-    private bool completed = false;
-    private bool paused = false;
-    private int repeatTimes = 0;
 
     private TweenProps startValues = new TweenProps();
     private TweenProps lastValues = new TweenProps();
     private TweenProps endValues = new TweenProps();
     private string[] keys;
 
-		private TargetWrapper target;
+		private readonly TargetWrapper wrapper;
 
 		public TweenInstance(object target) {
-			this.target = new TargetWrapper(target);
+      this.duration = 1f;
+      this.time = 0;
+      this.repeatTimes = 0;
+			this.wrapper = new TargetWrapper(target);
 		}
 
-		public TweenInstance To(TweenProps properties, float duration=1f) {
-      this.duration = duration;
+    public TweenInstance To(params object[] properties) {
+      return To(TweenProps.FromParams(properties));
+    }
+
+    public TweenInstance By(params object[] properties) {
+      return By(TweenProps.FromParams(properties));
+    }
+
+    public TweenInstance By(TweenProps properties) {
       List<string> keys = new List<string>();
       foreach(var entry in properties) {
-        var valueStart = target.GetValue(entry.Key);
-        var valueEnd = entry.Value;
-        // TODO support +100 -100
-        // TODO support array
+        var valueStart = wrapper.GetValue(entry.Key);
+        var valueEnd = valueStart + entry.Value;
         startValues.Add(entry.Key, valueStart);
         lastValues.Add(entry.Key, valueStart);
         endValues.Add(entry.Key, valueEnd);
@@ -74,6 +79,26 @@ namespace Mingo.Tween {
       }
       this.keys = keys.ToArray();
       started = true;
+      return this;
+    }
+
+		public TweenInstance To(TweenProps properties) {
+      List<string> keys = new List<string>();
+      foreach(var entry in properties) {
+        var valueStart = wrapper.GetValue(entry.Key);
+        var valueEnd = entry.Value;
+        startValues.Add(entry.Key, valueStart);
+        lastValues.Add(entry.Key, valueStart);
+        endValues.Add(entry.Key, valueEnd);
+        keys.Add(entry.Key);
+      }
+      this.keys = keys.ToArray();
+      started = true;
+      return this;
+    }
+
+    public TweenInstance Duration(float duration) {
+      this.duration = duration;
       return this;
     }
 
@@ -87,8 +112,8 @@ namespace Mingo.Tween {
       return this;
     }
 
-    public TweenInstance Yoyo() {
-      this.yoyoBack = true;
+    public TweenInstance Yoyo(bool yoyo = true) {
+      this.yoyo = yoyo;
       return this;
     }
 
@@ -127,12 +152,9 @@ namespace Mingo.Tween {
       if(this.completed) return true;
 
       this.time += deltaTime;
-      if(this.time >= this.duration) {
-        this.time = this.duration;
-      }
-      float elapsed = this.time / this.duration;
+      float elapsed = this.time % this.duration / this.duration;
       elapsed = elapsed > 1 ? 1 : elapsed;
-      float easingValue = this.easingFunc(this.playingYoyo ? (1-elapsed) : elapsed);
+      easingValue = this.easingFunc(this.playingYoyo ? (1-elapsed) : elapsed);
 
       for(int i=0,len=this.keys.Length; i<len; i++) {
         string key = this.keys[i];
@@ -143,25 +165,28 @@ namespace Mingo.Tween {
         value = valueStart + (valueEnd - valueStart) * easingValue;
         delta = value - valueLast;
         this.lastValues[key] = value;
-        target.SetValue(key, value, delta);
+        wrapper.SetValue(key, value, delta);
       }
 
       if(elapsed == 1) {
+        this.time = this.time - this.time % this.duration + float.Epsilon;
 
-        if(this.yoyoBack && !this.playingYoyo) {
-          this.playingYoyo = true;
-          this.time = 0;
-          return false;
-        }
-
-        if(this.yoyoBack && this.playingYoyo) {
-          this.playingYoyo = false;
-        }
-
-        if(this.repeatTimes > 1) {
-          this.repeatTimes --;
-          this.time = 0;
-          return false;
+        if (this.yoyo) {
+          if (!this.playingYoyo) {
+            this.playingYoyo = true;
+            return false;
+          } else {
+            this.playingYoyo = false;
+            if(this.repeatTimes >= 1) {
+              this.repeatTimes --;
+              return false;
+            }
+          }
+        } else {
+          if(this.repeatTimes >= 1) {
+            this.repeatTimes --;
+            return false;
+          }
         }
 
         this.completed = true;

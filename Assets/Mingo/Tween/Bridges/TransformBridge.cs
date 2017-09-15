@@ -37,11 +37,11 @@ namespace Mingo.Tween {
           target.localScale += sharedVector3;
           break;
         case "scaleY":
-          sharedVector3.Set(delta, 0, 0);
+          sharedVector3.Set(0, delta, 0);
           target.localScale += sharedVector3;
           break;
         case "scaleZ":
-          sharedVector3.Set(delta, 0, 0);
+          sharedVector3.Set(0, 0, delta);
           target.localScale += sharedVector3;
           break;
         default: return;
