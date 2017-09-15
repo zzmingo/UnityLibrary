@@ -21,11 +21,11 @@ namespace Mingo.Tween {
         this.bridgeKeyDict = TweenManager.bridgeTable.GetBridgeDict(target);
 			}
 
-      public float GetValue(string key) {
+      public object GetValue(string key) {
         return this.bridgeKeyDict[key].GetValueFrom(target, key);
       }
 
-      public void SetValue(string key, float value, float delta) {
+      public void SetValue(string key, object value, object delta) {
         this.bridgeKeyDict[key].SetValueTo(target, key, value, delta);
       }
 
@@ -160,10 +160,10 @@ namespace Mingo.Tween {
 
       for(int i=0,len=this.keys.Length; i<len; i++) {
         string key = this.keys[i];
-        float valueStart = this.startValues[key];
-        float valueLast = this.lastValues[key];
-        float valueEnd = this.endValues[key];
-        float value, delta;
+        object valueStart = this.startValues[key];
+        object valueLast = this.lastValues[key];
+        object valueEnd = this.endValues[key];
+        object value, delta;
         value = valueStart + (valueEnd - valueStart) * easingValue;
         delta = value - valueLast;
         this.lastValues[key] = value;

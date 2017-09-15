@@ -28,7 +28,11 @@ namespace Mingo.Tween {
       }
     }
 
-    internal class BridgeTable : Hashtable {
+    internal class ValueHandlerTable : Dictionary<Type, IValueHandler> {
+      
+    }
+
+    internal class BridgeTable : Dictionary<Type, Dictionary<string, IBridge>> {
 
       internal void AddBridge(IBridge bridge) {
         Type type = bridge.SupportedType;
@@ -37,7 +41,7 @@ namespace Mingo.Tween {
           keyDict = new Dictionary<string, IBridge>();
           Add(type, keyDict);
         } else {
-          keyDict = this[type] as Dictionary<string, IBridge>;
+          keyDict = this[type];
         }
         foreach(var key in bridge.SupportedKeys) {
           if (keyDict.ContainsKey(key)) {
@@ -52,7 +56,7 @@ namespace Mingo.Tween {
         if (!ContainsKey(type)) {
           throw TweenException.NotATweenTarget(type);
         }
-        return this[type] as Dictionary<string, IBridge>;
+        return this[type];
       }
 
     }

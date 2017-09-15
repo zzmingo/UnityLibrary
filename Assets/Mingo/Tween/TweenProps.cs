@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Mingo.Tween {
 
-  public class TweenProps : Dictionary<string, float> {
+  public class TweenProps : Dictionary<string, object> {
 
     public static TweenProps FromParams(params object[] args) {
       if (args.Length % 2 != 0) {
@@ -13,7 +13,7 @@ namespace Mingo.Tween {
       var props = new TweenProps();
       int i = 0;
 			while(i < args.Length - 1) {
-				props.Add(args[i].ToString(), float.Parse(args[i+1].ToString()));
+				props.Add(args[i].ToString(), args[i+1]);
 				i += 2;
 			}
 			return props;
