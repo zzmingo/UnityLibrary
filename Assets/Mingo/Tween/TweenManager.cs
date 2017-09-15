@@ -8,12 +8,15 @@ namespace Mingo.Tween {
   public class TweenManager : MonoBehaviour {
 
     internal static readonly BridgeTable bridgeTable = new BridgeTable();
+    internal static readonly ValueHandlerTable valueHandlerTable = new ValueHandlerTable();
 
     public static void CheckInit() {}
 
     static TweenManager() {
       bridgeTable.AddBridge(new TransformBridge());
       bridgeTable.AddBridge(new RectTransformBridge());
+
+      valueHandlerTable.AddValueHandler(new FloatValueHandler());
     }
 
     void Awake() {
@@ -25,11 +28,29 @@ namespace Mingo.Tween {
         foreach(var bridge in provider.GetTweenBridges()) {
           bridgeTable.AddBridge(bridge);
         }
+        foreach(var valueHandler in provider.GetTweenValueHandlers()) {
+          valueHandlerTable.AddValueHandler(valueHandler);
+        }
       }
     }
 
     internal class ValueHandlerTable : Dictionary<Type, IValueHandler> {
       
+      internal void AddValueHandler(IValueHandler valueHandler) {
+        Type type = valueHandler.HandleType;
+        if (ContainsKey(type)) {
+          throw TweenException.ExistsValueHandlerForTheType(type);
+        }
+        Add(type, valueHandler);
+      }
+
+      internal IValueHandler GetValueHandler(Type type) {
+        if (!ContainsKey(type)) {
+          throw TweenException.UnhandledValueType(type);
+        }
+        return this[type];
+      }
+
     }
 
     internal class BridgeTable : Dictionary<Type, Dictionary<string, IBridge>> {

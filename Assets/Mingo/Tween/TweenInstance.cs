@@ -20,12 +20,24 @@ namespace Mingo.Tween {
 				this.target = target;
         this.bridgeKeyDict = TweenManager.bridgeTable.GetBridgeDict(target);
 			}
+      
+      private void CheckInvalidKey(string key) {
+        if (!bridgeKeyDict.ContainsKey(key)) {
+          throw TweenException.InvalidKey(key, target.GetType());
+        }
+      }
 
       public object GetValue(string key) {
+#if UNITY_EDITOR
+        CheckInvalidKey(key);
+#endif
         return this.bridgeKeyDict[key].GetValueFrom(target, key);
       }
 
       public void SetValue(string key, object value, object delta) {
+#if UNITY_EDITOR
+        CheckInvalidKey(key);
+#endif
         this.bridgeKeyDict[key].SetValueTo(target, key, value, delta);
       }
 
@@ -50,6 +62,7 @@ namespace Mingo.Tween {
     private TweenProps lastValues = new TweenProps();
     private TweenProps endValues = new TweenProps();
     private string[] keys;
+    private Dictionary<string, IValueHandler> valueHandlerDict;
 
 		private readonly TargetWrapper wrapper;
 
@@ -58,6 +71,7 @@ namespace Mingo.Tween {
       this.time = 0;
       this.repeatTimes = 0;
 			this.wrapper = new TargetWrapper(target);
+      this.valueHandlerDict = new Dictionary<string, IValueHandler>();
 		}
 
     public TweenInstance To(params object[] properties) {
@@ -72,7 +86,10 @@ namespace Mingo.Tween {
       List<string> keys = new List<string>();
       foreach(var entry in properties) {
         var valueStart = wrapper.GetValue(entry.Key);
-        var valueEnd = valueStart + entry.Value;
+        var valueType = ValueUtils.GetValueType(valueStart);
+        var valueHandler = TweenManager.valueHandlerTable.GetValueHandler(valueType);
+        var valueEnd = valueHandler.DoPlus(valueStart, entry.Value);
+        valueHandlerDict.Add(entry.Key, valueHandler);
         startValues.Add(entry.Key, valueStart);
         lastValues.Add(entry.Key, valueStart);
         endValues.Add(entry.Key, valueEnd);
@@ -88,6 +105,9 @@ namespace Mingo.Tween {
       foreach(var entry in properties) {
         var valueStart = wrapper.GetValue(entry.Key);
         var valueEnd = entry.Value;
+        var valueType = ValueUtils.GetValueType(valueStart);
+        var valueHandler = TweenManager.valueHandlerTable.GetValueHandler(valueType);
+        valueHandlerDict.Add(entry.Key, valueHandler);
         startValues.Add(entry.Key, valueStart);
         lastValues.Add(entry.Key, valueStart);
         endValues.Add(entry.Key, valueEnd);
@@ -164,8 +184,9 @@ namespace Mingo.Tween {
         object valueLast = this.lastValues[key];
         object valueEnd = this.endValues[key];
         object value, delta;
-        value = valueStart + (valueEnd - valueStart) * easingValue;
-        delta = value - valueLast;
+        var valueHandler = valueHandlerDict[key];
+        value = valueHandler.DoEasing(valueStart, valueEnd, easingValue);
+        delta = valueHandler.DoSubtract(value, valueLast);
         this.lastValues[key] = value;
         wrapper.SetValue(key, value, delta);
       }

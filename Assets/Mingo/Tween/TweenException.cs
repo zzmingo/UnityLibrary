@@ -23,6 +23,14 @@ namespace Mingo.Tween {
       return new TweenException("T.p(...) requires an even number of arguments!");
     }
 
+    public static TweenException ExistsValueHandlerForTheType(Type type) {
+      return new TweenException(string.Format("There is an ValueHandler for the type: {0}", type));
+    }
+
+    public static TweenException UnhandledValueType(Type type) {
+      return new TweenException(string.Format("This type of value can not be handled: {0}", type));
+    }
+
     public TweenException(string message): base(message) {}
 
   }
