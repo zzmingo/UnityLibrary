@@ -17,6 +17,7 @@ namespace Mingo.Tween {
       bridgeTable.AddBridge(new RectTransformBridge());
 
       valueHandlerTable.AddValueHandler(new FloatValueHandler());
+      valueHandlerTable.AddValueHandler(new Vector3ValueHandler());
     }
 
     void Awake() {

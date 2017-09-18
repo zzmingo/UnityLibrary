@@ -52,22 +52,28 @@ namespace Mingo.Tween {
       gameObject.transform.position = new Vector3(0, 50f, 0);
       var tween = new TweenInstance(gameObject.transform);
       tween.By("y", 100, "scaleY", 2);
-      Assert.True(tween.started);
-      Assert.AreEqual(1, tween.duration);
-      Assert.AreEqual(0, tween.time);
-
-      bool completed = tween.Update(0.5f);
-      Assert.False(completed);
-      Assert.AreEqual(0.5f, tween.time);
-      Assert.AreEqual(100f, transform.position.y);
-      Assert.AreEqual(2f, transform.localScale.y);
-
-      completed = tween.Update(1f);
-
-      Assert.True(completed);
+      TweenTestUtils.RandomUpdates(tween);
       Assert.True(tween.completed);
       Assert.AreEqual(150f, transform.position.y);
       Assert.AreEqual(3f, transform.localScale.y);
+    }
+
+    [Test]
+    public void TestTweenToVector3() {
+      var tween = new TweenInstance(gameObject.transform);
+      var position = new Vector3(100, 50, 70);
+      var scale = new Vector3(2, 3, 4);
+      var rotation = new Vector3(30, 60, 90);
+      tween.To(
+        "position", position,
+        "scale", scale,
+        "rotation", rotation
+      );
+      TweenTestUtils.RandomUpdates(tween);
+      Assert.True(tween.completed);
+      Assert.True(position == transform.position);
+      Assert.True(scale == transform.localScale);
+      Assert.True(rotation == transform.eulerAngles);
     }
 
   }

@@ -27,6 +27,8 @@ namespace Mingo.Tween {
         case "bottom": return target.offsetMin.y;
         case "top": return target.offsetMax.y;
         case "right": return target.offsetMax.x;
+        case "width": return target.rect.width;
+        case "height": return target.rect.height;
         case "scaleX": return target.localScale.x;
         case "scaleY": return target.localScale.y;
         default: return 0;
