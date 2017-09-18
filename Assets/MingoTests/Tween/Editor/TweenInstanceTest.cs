@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.TestTools;
 using NUnit.Framework;
@@ -74,6 +75,32 @@ namespace Mingo.Tween {
       Assert.True(position == transform.position);
       Assert.True(scale == transform.localScale);
       Assert.True(rotation == transform.eulerAngles);
+    }
+
+    [Test]
+    public void TestTweenToUIColor() {
+      GameObject gameObject = new GameObject("test", typeof(RectTransform), typeof(CanvasRenderer));
+      var tween = new TweenInstance(gameObject.transform);
+      var color = new Color(0.5f, 0.6f, 0.7f, 0.8f);
+      tween.To(
+        "color", color
+      );
+      TweenTestUtils.RandomUpdates(tween);
+      Assert.True(tween.completed);
+      Assert.True(color == gameObject.GetComponent<CanvasRenderer>().GetColor());
+    }
+
+    [Test]
+    public void TestTweenToUIAlpha() {
+      GameObject gameObject = new GameObject("test", typeof(RectTransform), typeof(CanvasRenderer));
+      var tween = new TweenInstance(gameObject.transform);
+      var alpha = 0.554f;
+      tween.To(
+        "alpha", alpha
+      );
+      TweenTestUtils.RandomUpdates(tween);
+      Assert.True(tween.completed);
+      Assert.True(alpha == gameObject.GetComponent<CanvasRenderer>().GetAlpha());
     }
 
   }

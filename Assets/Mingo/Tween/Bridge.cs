@@ -8,15 +8,26 @@ namespace Mingo.Tween {
     Type SupportedType { get; }
     string[] SupportedKeys { get; }
 
+    void InitWithTarget(object target);
     object GetValueFrom(object target, string key);
     void SetValueTo(object target, string key, object value, object delta);
 
+  }
+
+  public interface IBridgeFactory {
+      IBridge Create(object target);
   }
 
   public abstract class Bridge<T> : IBridge where T : class {
 
     public abstract Type SupportedType { get; }
     public abstract string[] SupportedKeys { get; }
+
+    private T target;
+
+    public void InitWithTarget(object target) {
+      this.target = target as T;
+    }
 
     public object GetValueFrom(object target, string key) {
       return GetValue(target as T, key);

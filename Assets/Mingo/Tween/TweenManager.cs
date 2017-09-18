@@ -15,7 +15,7 @@ namespace Mingo.Tween {
     static TweenManager() {
       bridgeTable.AddBridge(new TransformBridge());
       bridgeTable.AddBridge(new RectTransformBridge());
-      bridgeTable.AddBridge(new ColorBridge());
+      bridgeTable.AddBridge(new UIColorBridge());
 
       valueHandlerTable.AddValueHandler(new FloatValueHandler());
       valueHandlerTable.AddValueHandler(new Vector3ValueHandler());
