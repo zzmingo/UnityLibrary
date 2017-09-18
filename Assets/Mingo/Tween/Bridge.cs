@@ -23,12 +23,6 @@ namespace Mingo.Tween {
     public abstract Type SupportedType { get; }
     public abstract string[] SupportedKeys { get; }
 
-    private T target;
-
-    public void InitWithTarget(object target) {
-      this.target = target as T;
-    }
-
     public object GetValueFrom(object target, string key) {
       return GetValue(target as T, key);
     }
