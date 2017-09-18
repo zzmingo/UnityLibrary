@@ -25,4 +25,16 @@ namespace Mingo {
 
   }
 
+  public class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour {
+
+    protected override void Awake() {
+      if (this == shared) {
+        DontDestroyOnLoad(gameObject);
+        return;
+      }
+      Destroy(this);
+    }
+
+  }
+
 }
