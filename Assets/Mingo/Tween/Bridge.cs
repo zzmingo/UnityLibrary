@@ -8,7 +8,6 @@ namespace Mingo.Tween {
     Type SupportedType { get; }
     string[] SupportedKeys { get; }
 
-    void InitWithTarget(object target);
     object GetValueFrom(object target, string key);
     void SetValueTo(object target, string key, object value, object delta);
 
