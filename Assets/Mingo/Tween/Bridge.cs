@@ -13,10 +13,6 @@ namespace Mingo.Tween {
 
   }
 
-  public interface IBridgeFactory {
-      IBridge Create(object target);
-  }
-
   public abstract class Bridge<T> : IBridge where T : class {
 
     public abstract Type SupportedType { get; }
