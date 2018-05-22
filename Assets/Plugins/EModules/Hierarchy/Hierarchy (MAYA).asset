@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Name: Hierarchy (MAYA)
   m_EditorClassIdentifier: 
   last_scenesV2:
+  - guid: e3cd6c95998274adbaafc18fa7c975a4
+    pin: 0
+  - guid: 31b889d7c2a6a47b8930eeb02c996178
+    pin: 0
   - guid: 9cb62a3cb0702492bb9b2787cbe6fa62
     pin: 0
   last_scenes: []
