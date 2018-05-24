@@ -5,7 +5,7 @@ Physics2DSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 3
   m_Gravity: {x: 0, y: 0}
-  m_DefaultMaterial: {fileID: 0}
+  m_DefaultMaterial: {fileID: 6200000, guid: 18e55917007c0435690c6f7b3f17aa8f, type: 2}
   m_VelocityIterations: 8
   m_PositionIterations: 3
   m_VelocityThreshold: 1
@@ -18,7 +18,7 @@ Physics2DSettings:
   m_TimeToSleep: 0.5
   m_LinearSleepTolerance: 0.01
   m_AngularSleepTolerance: 2
-  m_DefaultContactOffset: 0.01
+  m_DefaultContactOffset: 0.001
   m_JobOptions:
     serializedVersion: 2
     useMultithreading: 0

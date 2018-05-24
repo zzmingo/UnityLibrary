@@ -20,7 +20,7 @@ namespace NRPG {
       
     }
 
-    void Update() {
+    void FixedUpdate() {
       if (movementEnabled) {
         float x = Input.GetAxis ("Horizontal");
         float y = Input.GetAxis ("Vertical");

@@ -12,8 +12,7 @@ namespace NRPG {
     private float mLastMoveX, mLastMoveY;
 
     protected override void setEntryPoint(PlayerEntryPoint entryPoint) {
-      var entryPos = Vector3Int.FloorToInt(entryPoint.transform.position);
-      transform.position = tilemap.GetCellCenterLocal(entryPos);
+      transform.position = tilemap.GetCellCenterWorld(tilemap.WorldToCell(entryPoint.transform.position));
     }
 
     protected override void Move(float x, float y) {
@@ -32,6 +31,10 @@ namespace NRPG {
         }
         mLastMoveX = x;
         mLastMoveY = y;
+      }
+
+      if (mLastMoveX == 0 && mLastMoveY == 0) {
+        return;
       }
       
       var cellSize = tilemap.cellSize;
