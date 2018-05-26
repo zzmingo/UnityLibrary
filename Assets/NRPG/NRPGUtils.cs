@@ -5,11 +5,11 @@ namespace NRPG {
   public class NRPGUtils {
 
     public static bool IsPlayer(GameObject test) {
-      return test != null && test.CompareTag("Player");
+      return test != null && test.CompareTag(NRPGSettings.playerTagName);
     }
 
     public static bool IsPlayer(Behaviour test) {
-      return test != null && test.CompareTag("Player");
+      return test != null && test.CompareTag(NRPGSettings.playerTagName);
     }
 
     public static bool IsDestroyed(Object test) {

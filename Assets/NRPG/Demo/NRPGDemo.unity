@@ -1080,6 +1080,7 @@ GameObject:
   - component: {fileID: 1615532775}
   - component: {fileID: 1615532777}
   - component: {fileID: 1615532776}
+  - component: {fileID: 1615532778}
   m_Layer: 0
   m_Name: Stuff
   m_TagString: Untagged
@@ -1094,7 +1095,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1615532774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2, y: 0.08, z: 0}
+  m_LocalPosition: {x: -0.88, y: 0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1547542907}
@@ -1123,7 +1124,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.1, y: 0.1}
   m_EdgeRadius: 0
 --- !u!212 &1615532777
 SpriteRenderer:
@@ -1171,6 +1172,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1615532778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1615532774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2c6e3f6e00dc4bcfb0e53505fe59d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  times: 0
+  manualTimes: 1
+  destroyTiming: 0
+  triggerOnProcessing: 0
+  destroyObject: 1
+  timing: 0
 --- !u!1 &1705799603
 GameObject:
   m_ObjectHideFlags: 0

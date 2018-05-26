@@ -22,6 +22,7 @@ namespace NRPG {
     public int manualTimes = 1;
     public TriggerDestroyTiming destroyTiming = TriggerDestroyTiming.OnTrigger;
     public bool triggerOnProcessing = false;
+    public bool destroyObject = true;
 
     // 正在执行的事件
     private EventBase processingEvent;
@@ -38,29 +39,33 @@ namespace NRPG {
 
       triggerTimes ++;
 
+      bool destroyOnTrigger = CheckTriggerTimesEnough() && destroyTiming == TriggerDestroyTiming.OnTrigger;
+      if (destroyOnTrigger) {
+        DestroyTrigger();
+      }
+
       var eventBase = QueryEvent();
       EventState eventState = EventState.Completed;
       if (eventBase != null) {
-
-        // 如果一触发就销毁
-        if (CheckTriggerTimesEnough() && destroyTiming == TriggerDestroyTiming.OnTrigger) {
-          Destroy(this);
-          eventBase.Process();
-          return;
-        }
 
         processingEvent = eventBase;
         eventBase.Process();
         timesProcessed ++;
         eventState = eventBase.state;
 
+        // 如果一触发就销毁
+        if (destroyOnTrigger) {
+          return;
+        }
+
         // 如果是事件执行过就销毁
         if (CheckTriggerTimesEnough() && destroyTiming == TriggerDestroyTiming.OnEventProcessed) {
-          Destroy(this);
+          DestroyTrigger();
           return;
         }
 
       }
+
       // 在此先检查一下事件执行情况，后续状态在Update中检查
       if (eventState == EventState.Completed) {
         processingEvent = null;
@@ -81,7 +86,7 @@ namespace NRPG {
 
     public void OnEventCompleted() {
       if (CheckTriggerTimesEnough() && destroyTiming == TriggerDestroyTiming.OnEventCompleted) {
-        Destroy(this);
+        DestroyTrigger();
       }
     }
 
@@ -99,6 +104,14 @@ namespace NRPG {
 
     bool CheckProcessingEvent() {
       return processingEvent != null && !triggerOnProcessing;
+    }
+
+    void DestroyTrigger() {
+      if (destroyObject) {
+        Destroy(gameObject);
+      } else {
+        Destroy(this);
+      }
     }
 
     void Update() {

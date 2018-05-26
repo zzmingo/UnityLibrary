@@ -16,6 +16,7 @@ namespace NRPG {
     public abstract bool CanTrigger(Collider2D other);
 
     void OnTriggerEnter2D(Collider2D other) {
+      Debug.Log("ontrigger " + timing + " " + other.tag + " " + NRPGUtils.IsPlayer(other));
       OnTrigger(TriggerTiming.OnEnter, other);
     }
 

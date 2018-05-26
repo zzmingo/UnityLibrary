@@ -30,7 +30,6 @@ namespace NRPG {
       var aEvent = gameObject.AddComponent<EmptyEvent>();
       trigger.OnTrigger();
       Assert.AreEqual(aEvent.state, EventState.Completed);
-      Assert.True(NRPGUtils.IsDestroyed(trigger));
     }
 
   }
