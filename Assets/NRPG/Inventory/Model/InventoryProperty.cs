@@ -9,6 +9,7 @@ namespace NRPG {
 
     public string Id;
     public string Name;
+    public string Tags;
     public float Value;
 
   }
@@ -32,8 +33,22 @@ namespace NRPG {
 
   public class InventoryProperty {
 
-    public InventoryItemDefinition Definition;
+    public InventoryPropertyDefinition Definition;
+    public InventoryPropertyFomula Fomula;
 
+    public string Name {
+      get { return Definition.Name; }
+    }
+
+    public float Value {
+      get { 
+        float value = this.Definition.Value;
+        if (Fomula != null) {
+          value = Fomula.Compute(value);
+        }
+        return value;
+      }
+    }
 
   }
 

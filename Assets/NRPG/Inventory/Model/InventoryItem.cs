@@ -1,23 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace NRPG {
-
-// id
-// name
-// description
-// category
-// icon
-// weight
-// requiredLevel
-// qualify
-// properties
-// usageRequirement
-// buyPrice
-// sellPrice
-// droppable
-// sellable
-// storable
-// stackSize
-
-
 
   public class InventoryItemCategory {
     public string Id;
@@ -40,6 +25,13 @@ namespace NRPG {
     public bool Sellable;
     public bool Stoable;
     public int StackSize;
+    public InventoryProperty Properties;
+
+  }
+
+  public class InventoryItem {
+
+    public InventoryItemDefinition Definition;
 
   }
 
