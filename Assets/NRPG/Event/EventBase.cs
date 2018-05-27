@@ -19,6 +19,7 @@ namespace NRPG {
     }
 
     public abstract void Process();
+    
   }
 
 }
