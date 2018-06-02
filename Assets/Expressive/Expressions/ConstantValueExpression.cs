@@ -7,6 +7,8 @@ namespace Expressive.Expressions
         private readonly ConstantValueExpressionType _expressionType;
         private readonly object _value;
 
+        internal ConstantValueExpressionType expressionType { get { return _expressionType; } }
+
         internal ConstantValueExpression(ConstantValueExpressionType type, object value)
         {
             _expressionType = type;

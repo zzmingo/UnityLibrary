@@ -15,8 +15,6 @@ namespace Expressive.Functions.Statistical
         public override object Evaluate(IExpression[] parameters, ExpressiveOptions options)
         {
             this.ValidateParameterCount(parameters, -1, 1);
-
-            object result = 0;
             
             IList<decimal> decimalValues = new List<decimal>();
 

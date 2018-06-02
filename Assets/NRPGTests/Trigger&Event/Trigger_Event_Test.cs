@@ -11,12 +11,10 @@ namespace NRPG {
   public class Trigger_Event_Test {
 
     GameObject gameObject;
-    Transform transform;
 
     [SetUp]
     public void SetUp() {
       gameObject = new GameObject();
-      transform = gameObject.transform;
     }
 
     [TearDown]

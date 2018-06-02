@@ -8,6 +8,8 @@ namespace Expressive.Expressions
         private readonly Func<IExpression[], IDictionary<string, object>, object> _function;
         private readonly string _name;
         private readonly IExpression[] _parameters;
+        
+        internal String Name { get { return _name; } }
 
         internal FunctionExpression(string name, Func<IExpression[], IDictionary<string, object>, object> function, IExpression[] parameters)
         {

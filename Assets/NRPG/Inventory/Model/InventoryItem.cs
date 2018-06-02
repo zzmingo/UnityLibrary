@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace NRPG {
 
   public class InventoryItemCategory {
+
     public string Id;
     public string Name;
+    
   }
 
   public class InventoryItemDefinition {

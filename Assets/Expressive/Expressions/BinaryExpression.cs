@@ -183,7 +183,7 @@ namespace Expressive.Expressions
                     return this.Evaluate(lhsResult, _rightHandSide, variables, (l, r) => Numbers.Modulus(l, r));
                 case BinaryExpressionType.Divide:
                     {
-                        var rhsResult = _rightHandSide.Evaluate(variables);
+                        _rightHandSide.Evaluate(variables);
 
                         return this.Evaluate(lhsResult, _rightHandSide, variables, (l, r) =>
                         {
